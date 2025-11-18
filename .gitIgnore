@@ -1,4 +1,4 @@
-Library
-ProjectSettings 
-Assets 
-Temp
+Library/
+Temp/
+*.tmp
+*.log
