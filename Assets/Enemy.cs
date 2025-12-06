@@ -1,27 +1,37 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
-    private SpriteRenderer sr;
-   [SerializeField] private float redColorDuration = 1;
-    private void Awake()
-    {
-        sr = GetComponent<SpriteRenderer>();
+    private bool playerDetected;
+
+    protected override void Update() {
+        HandleCollision();
+        HandleMovement();
+        HandleAnimation();
+        HandleFlip();
+        HandleAttack();
+    }
+    protected override void HandleMovement() {
+        if (canMove == true)
+            rb.linearVelocity = new Vector2(facingDirection * moveSpeed, rb.linearVelocity.y);
+        else 
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        //change velocity in the x direction based on input and keep the y velocity the same
+    }
+    protected override void HandleAttack() {
+        if (playerDetected) {
+            animate.SetTrigger("attack");
+        }
     }
 
-    private void Update()
+    protected override void HandleCollision()
     {
-        Debug.Log(Time.deltaTime); // Logs the time in seconds it took to complete the last frame (higher fps = lower deltaTime | lower fps = higher deltaTime)
+        base.HandleCollision();
+        playerDetected = Physics2D.OverlapCircle(attackPoint.position, attackRadius, whatIsTarget);
+        //checks attack point position with radius and layer to see if object is player and whether or not it is in range
     }
-    public void takeDamage() {
-        Debug.Log(gameObject.name + " Enemy took damage");
-        sr.color = Color.red;
-        Invoke(nameof(TurnWhite), redColorDuration);
-    }
+}
 
-    private void TurnWhite() {
-        sr.color = Color.white;
-    }
 
     
-}
+
