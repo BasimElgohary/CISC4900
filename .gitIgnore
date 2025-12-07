@@ -2,7 +2,5 @@ Library/
 Temp/
 *.tmp
 *.log
-Assets/
 Assembly-CSharp.csproj
 Logs/ 
-ProjectSettings/ 
